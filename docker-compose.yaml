@@ -1,0 +1,25 @@
+version: "3"
+services: 
+  hub:
+    image: selenium/hub:3.141.59 
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome:3.141.59 
+    links: 
+      - hub
+    environment:
+      - HUB_HOST=hub  
+  firefox:  
+    image: selenium/node-firefox:3.141.59
+    links: 
+      - hub 
+    environment:
+      - HUB_HOST=hub
+  search_module:
+    image: evgenymyshkovets/selenium-docker
+    links:
+      - chrome
+      - firefox
+    volumes:
+      - ./search-result:/usr/share/docker/test-output
